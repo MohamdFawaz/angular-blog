@@ -61,3 +61,13 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+import Echo from 'laravel-echo';
+
+declare global {
+  interface Window {
+    io: any;
+    Echo: Echo;
+    MyNamespace: any; }
+}
+
+window.MyNamespace = window.MyNamespace || {};

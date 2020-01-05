@@ -37,15 +37,11 @@
               <div class='card-body center'>
                 <h5>Comment</h5>
                 <hr />
-                <div *ngFor="let comment of post.comment; let j = index;">
+                <div *ngFor="let comment of post.comments; let j = index;">
                   <div class="row">
                     <div class="col-md-6 left">
-                      <h6>Comment {{j+1}}: {{ comment.commentText }}</h6>
+                      <h6>Comment {{j+1}}: {{ comment.body }}</h6>
                     </div>
-                    <div class="col-md-6 text-right">
-                      <button type="button" class="btn btn-warning btn-sm" (click)="openEditComment(i,j)">Edit</button>
-                      &nbsp;&nbsp;
-                      <button (click)="deleteComment(i , j , comment.id);" type="button" class="btn btn-danger btn-sm">Delete</button></div>
                   </div>
                   <hr/>
                 </div>

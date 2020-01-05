@@ -43,7 +43,7 @@ export class ApiServiceService {
   }
 
   addComment(comment: Comment): Observable<Comment> {
-    return this.http.post<Comment>(this.apiUrl + '/comment', comment, httpOptions);
+    return this.http.post<Comment>(this.apiUrl + '/submit', comment, httpOptions);
   }
 
   editComment(id: number, comment: Comment): Observable<Post> {
@@ -60,6 +60,10 @@ export class ApiServiceService {
 
   getFilteredPosts(categorySlug: string): Observable<Post[]> {
     return this.http.get<Post[]>(this.apiUrl + '/posts/topic/' + categorySlug, httpOptions);
+  }
+
+  me(): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/auth/me`, {}, httpOptions);
   }
 
 }
