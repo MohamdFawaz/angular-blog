@@ -5,11 +5,17 @@
         <div class='card-header'>
           <h3>All Posts</h3>
         </div>
-        <div class='card-body center'>
-          <div class="input-group md-6">
-            <input type="text" class="form-control" placeholder="Post" aria-describedby="button-addon2" #post>
+        <div class='card-body center' >
+          <div class="input-group md-6" *ngIf="isUserAdmin">
+            <input type="text" class="form-control" placeholder="Post" aria-describedby="button-addon2" #postTitle>
+            <select class="form-control" #postSlug>
+              <option value="">- Choose Value -</option>
+              <option *ngFor="let category of categories" value="{{ category.slug }}">
+                {{ category.name }}
+              </option>
+            </select>
             <div class="input-group-append">
-              <button (click)="addPost(post.value); post.value='';" class="btn btn-outline-secondary" type="button" id="button-addon2">Post
+              <button (click)="addPost(postTitle.value,postSlug.value); postTitle.value='';" class="btn btn-outline-secondary" type="button" id="button-addon2">Post
                 it!</button>
             </div>
           </div>
@@ -28,24 +34,19 @@
                     <p>{{ post.body }}</p>
                   </div>
                   <div class="col-md-6 text-right">
-                    <button type="button" class="btn btn-warning" (click)="openEditPost(i)">Edit</button>
                     &nbsp;&nbsp;
-                    <button type="button" class="btn btn-danger" (click)="deletePost(i , post.id);">Delete</button>
+                    <button *ngIf="isUserAdmin" type="button" class="btn btn-danger" (click)="deletePost(i , post.id);">Delete</button>
                   </div>
                 </div>
               </div>
               <div class='card-body center'>
                 <h5>Comment</h5>
                 <hr />
-                <div *ngFor="let comment of post.comment; let j = index;">
+                <div *ngFor="let comment of post.comments; let j = index;">
                   <div class="row">
                     <div class="col-md-6 left">
-                      <h6>Comment {{j+1}}: {{ comment.commentText }}</h6>
+                      <h6>Comment {{j+1}}: {{ comment.body }}</h6>
                     </div>
-                    <div class="col-md-6 text-right">
-                      <button type="button" class="btn btn-warning btn-sm" (click)="openEditComment(i,j)">Edit</button>
-                      &nbsp;&nbsp;
-                      <button (click)="deleteComment(i , j , comment.id);" type="button" class="btn btn-danger btn-sm">Delete</button></div>
                   </div>
                   <hr/>
                 </div>
@@ -62,70 +63,6 @@
             <br />
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="backdrop" [ngStyle]="{'display':display1}"></div>
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display1}">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Post Number: {{ data.postIndex + 1 }}</h5>
-        <button type="button" class="close" (click)="onClose()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <label for="editPost" class="col-sm-3 col-form-label">Post Title :</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" id="editPost" value="{{ data.title }}" [(ngModel)]="data.title" >
-          </div>
-        </div>
-        <div class="row mt-1">
-          <label for="editPost" class="col-sm-3 col-form-label">Post Body :</label>
-          <div class="col-sm-9">
-            <textarea type="text" class="form-control" id="editPost" rows="5" [(ngModel)]="data.body">{{ data.body }}</textarea>
-          </div>
-        </div>
-        <div class="row mt-1">
-          <label for="category_id" class="col-sm-3 col-form-label">Post Category :</label>
-          <div class="col-sm-9">
-            <select class="custom-select" name="category_id" id="category_id">
-              <option *ngFor="let category of categories" value="{{ category.id }}">{{ category.name }}</option>
-            </select>
-          </div>
-        </div>
-        </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="onCloseAndSaveEdit()">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="backdrop" [ngStyle]="{'display':display2}"></div>
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display2}">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Comment Number: {{ data.commentIndex + 1 }}</h5>
-        <button type="button" class="close" (click)="onClose()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <label for="editPost" class="col-sm-4 col-form-label">Comment Text :</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="editPost" value="{{ data.commentText }}" [(ngModel)]="data.commentText">
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="onCloseAndSaveComment()">Save changes</button>
       </div>
     </div>
   </div>

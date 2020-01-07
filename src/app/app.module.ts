@@ -15,7 +15,7 @@ import {ErrorInterceptor} from './_helpers/error.interceptor';
   declarations: [
     AppComponent,
     ShowPostComponent,
-    LoginComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
