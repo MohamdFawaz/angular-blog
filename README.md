@@ -1,27 +1,24 @@
 # AngularBlog
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.21.
+This is a frontend blog system for posting and commenting on posts using 
+[Laravel Blog](https://github.com/MohamdFawaz/laravel-blog) as a backend and postgresql as DB engine.
 
-## Development server
+## How to Setup
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+To get this system working you have to have the following prerequisites installed:
+[Redis](https://redis.io/),
+[Nodejs](https://nodejs.org/en/),
+[AngularCLI](https://cli.angular.io/).
 
-## Code scaffolding
+Once cloned run `npm install` to install all dependencies in package.json file 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Running the Server
 
-## Build
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
+Make sure to start the backend system beforehand in order to be able to view posts and their categories.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Starting Realtime Server
+To be able to see changes in real time as users comments you'll need to start laravel echo server
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Run `laravel-echo-server start` 
