@@ -59,10 +59,10 @@ export class ShowPostComponent implements OnInit {
       });
   }
 
-  addPost(body: string, topicSlug: string): void {
+  addPost(title: string, body: string, topicSlug: string): void {
     body = body.trim();
     const slug = 'post-' + postUUID;
-    this.apiService.addPost({ slug, body, topic: topicSlug } as Post, postUUID)
+    this.apiService.addPost({ slug, title, body, topic: topicSlug } as Post, postUUID)
       .subscribe(post => {
         post.comments = [];
         this.posts.unshift(post);

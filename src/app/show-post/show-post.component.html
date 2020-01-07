@@ -7,7 +7,8 @@
         </div>
         <div class='card-body center' >
           <div class="input-group md-6" *ngIf="isUserAdmin">
-            <input type="text" class="form-control" placeholder="Post" aria-describedby="button-addon2" #postTitle>
+            <input type="text" class="form-control" placeholder="Title" aria-describedby="button-addon2" #postTitle>
+            <input type="text" class="form-control" placeholder="Body" aria-describedby="button-addon2" #postBody>
             <select class="form-control" #postSlug>
               <option value="">- Choose Value -</option>
               <option *ngFor="let category of categories" value="{{ category.slug }}">
@@ -15,13 +16,13 @@
               </option>
             </select>
             <div class="input-group-append">
-              <button (click)="addPost(postTitle.value,postSlug.value); postTitle.value='';" class="btn btn-outline-secondary" type="button" id="button-addon2">Post
+              <button (click)="addPost(postTitle.value,postBody.value,postSlug.value); postTitle.value='';" class="btn btn-outline-secondary" type="button" id="button-addon2">Post
                 it!</button>
             </div>
           </div>
           <div>
             <button (click)="filterPosts(category.slug)"  *ngFor="let category of categories;let i = index;" type="button" class="btn btn-primary m-1">
-              {{ category.name }} <span class="badge">{{ category.posts_count }}</span>
+              {{ category.name }} <span class="badge bg-white text-dark ml-1">{{ category.posts_count }}</span>
             </button>
           </div>
           <div *ngFor="let post of posts; let i = index;">
