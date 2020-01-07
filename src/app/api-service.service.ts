@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from './_models/post';
 import {Category} from './_models/category';
+import {convertMetaToOutput} from '@angular/compiler/src/render3/util';
 
 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -39,15 +40,7 @@ export class ApiServiceService {
   }
 
   addComment(comment: Comment): Observable<Comment> {
-    return this.http.post<Comment>(this.apiUrl + '/submit', comment, httpOptions);
-  }
-
-  editComment(id: number, comment: Comment): Observable<Post> {
-    return this.http.put<Post>(this.apiUrl + '/comment/' + id, comment, httpOptions);
-  }
-
-  deleteComment(id: string): any {
-    return this.http.delete(this.apiUrl + '/comment/' + id);
+    return this.http.post<Comment>(this.apiUrl + '/comment/submit', comment, httpOptions);
   }
 
   getCategories(): Observable<Category[]> {
