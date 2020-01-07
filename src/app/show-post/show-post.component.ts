@@ -53,7 +53,6 @@ export class ShowPostComponent implements OnInit {
 
     window.Echo.channel('laravel_database_comment')
       .listen('.App\\Events\\PostComment', (response) => {
-        console.log(response);
         this.getPostIndexByID(response.data.post_id);
         this.posts[this.postIndex].comments.push(response.data);
 
