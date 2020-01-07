@@ -8,7 +8,7 @@ import { AuthGuard } from './_helpers/auth.guard';
 // Run ShowPostComponent
 
 const routes: Routes = [
-  {path: '' , component: ShowPostComponent, canActivate: [AuthGuard] }, // Show ShowPostComponent on url directory /
+  {path: '' , component: ShowPostComponent   }, // Show ShowPostComponent on url directory /
   {path: 'login', component: LoginComponent}
 ];
 

@@ -38,5 +38,8 @@ export class AuthenticationService {
     this.currentUserSubject.next(null);
   }
 
-
+  checkIsAdmin() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    return currentUser.is_admin;
+  }
 }

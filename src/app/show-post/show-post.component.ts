@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../api-service.service';
+import * as uuid from 'uuid';
+import Echo from 'laravel-echo';
+
 import { Post } from '../_models/post';
 import {Category} from '../_models/category';
 
-import Echo from 'laravel-echo';
+import {AuthenticationService} from '../_services/AuthenticationService';
 declare var require: any;
+const postUUID = uuid.v4();
 
 @Component({
   selector: 'app-show-post',
@@ -15,6 +19,8 @@ export class ShowPostComponent implements OnInit {
   posts: Post[];
   categories: Category[];
   postIndex: number;
+  isUserAdmin: false;
+
   data = {
     postId: '',
     body: '',
@@ -25,10 +31,9 @@ export class ShowPostComponent implements OnInit {
     commentIndex: 0
   };
 
-  display1 = 'none';
-  display2 = 'none';
   constructor(
-    private apiService: ApiServiceService
+    private apiService: ApiServiceService,
+    private authService: AuthenticationService
   ) { }
 
   ngOnInit() {
@@ -39,9 +44,8 @@ export class ShowPostComponent implements OnInit {
       categories => this.categories = categories
     );
 
+    this.isUserAdmin = this.authService.checkIsAdmin();
     window.io = require('socket.io-client');
-
-
     window.Echo = new Echo({
       broadcaster: 'socket.io',
       host: 'http://localhost:6001',
@@ -55,34 +59,22 @@ export class ShowPostComponent implements OnInit {
 
       });
   }
-  onClose() {
-    this.display1 = 'none';
-    this.display2 = 'none';
-  }
 
-  addPost(body: string): void {
+  addPost(body: string, topicSlug: string): void {
     body = body.trim();
-    this.apiService.addPost({ body } as Post)
+    const slug = 'post-' + postUUID;
+    this.apiService.addPost({ slug, body, topic: topicSlug } as Post, postUUID)
       .subscribe(post => {
         post.comments = [];
-        this.posts.push(post);
-      });
-  }
-
-  editPost(id: string , body: string , index: number): void {
-    body = body.trim();
-    this.apiService.editPost(id , { body } as Post)
-      .subscribe(isEdit => {
-        if (isEdit) { this.posts[index].body = body; }
+        this.posts.unshift(post);
       });
   }
 
   deletePost(postIndex: number , id: string): void {
+
     this.apiService.deletePost(id).subscribe(isDelete => {
-      if (isDelete) {
         // tslint:disable-next-line:triple-equals
-        if (this.posts.length == 1) { this.posts = []; } else { this.posts.splice(postIndex, 1); }
-      }
+      if (this.posts.length == 1) { this.posts = []; } else { this.posts.splice(postIndex, 1); }
     });
   }
 
@@ -90,34 +82,14 @@ export class ShowPostComponent implements OnInit {
     commentText = commentText.trim();
     this.apiService.addComment({body: commentText, post_id: postId} as unknown as Comment)
       .subscribe(comment => {
-        this.posts[i].comments.push(comment);
+        //
       });
-  }
-
-  editComment(id: number , commentText: string , postId: string , commentIndex: number , postIndex: number): void {
-    commentText = commentText.trim();
-    this.apiService.editComment(id , {commentText, postId} as unknown as Comment)
-      .subscribe(isEdit => {
-        if (isEdit) { this.posts[postIndex].comments[commentIndex].commentText = commentText; }
-      });
-  }
-
-  deleteComment(postIndex: number , commentIndex: number , id: string): void {
-    this.apiService.deleteComment(id).subscribe(isDelete => {
-      if (isDelete) {
-        // tslint:disable-next-line:triple-equals
-        if (this.posts[postIndex].comments.length == 1) {
-          this.posts[postIndex].comments = [];
-        } else {
-          this.posts[postIndex].comments.splice(commentIndex, 1);
-        }
-      }
-    });
   }
 
   getPostIndexByID(postID: string) {
-    this.postIndex =  this.posts.findIndex(x => x.id === postID);
+    this.postIndex =  this.posts.findIndex(index => index.id === postID);
   }
+
   filterPosts(categorySlug: string): void {
     this.apiService.getFilteredPosts(categorySlug).subscribe(posts => this.posts = posts);
   }

@@ -30,16 +30,12 @@ export class ApiServiceService {
     return this.http.get<Post[]>(this.apiUrl + '/posts', httpOptions);
   }
 
-  addPost(post: Post): Observable<Post> {
-    return this.http.post<Post>(this.apiUrl + '/post', post, httpOptions);
-  }
-
-  editPost(id: string, post: Post): Observable<Post> {
-    return this.http.put<Post>(this.apiUrl + '/post/' + id, post, httpOptions);
+  addPost(post: Post, postUUID: string): Observable<Post> {
+    return this.http.post<Post>(this.apiUrl + '/posts/' + postUUID, post, httpOptions);
   }
 
   deletePost(id: string): any {
-    return this.http.delete(this.apiUrl + '/post/' + id);
+    return this.http.delete(this.apiUrl + '/posts/' + id, httpOptions);
   }
 
   addComment(comment: Comment): Observable<Comment> {
