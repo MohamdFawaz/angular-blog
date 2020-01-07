@@ -13,7 +13,7 @@ export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
-  constructor(private http: HttpClient, private apiService: ApiServiceService) {
+  constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -40,6 +40,6 @@ export class AuthenticationService {
 
   checkIsAdmin() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    return currentUser.is_admin;
+    return currentUser  ? currentUser.is_admin :  false;
   }
 }
